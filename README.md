@@ -18,23 +18,33 @@ This blog is deployed on **Cloudflare Pages**. Every push to `main` triggers a b
 
 | | |
 | --- | --- |
-| Production URL | <https://astro-blog-test-4oz.pages.dev> |
 | Cloudflare Pages project | `astro-blog-test` |
 | Production branch | `main` |
 | Build command | `npm run build` |
 | Output directory | `dist` |
 | Content editing | [Pages CMS](https://app.pagescms.org) — commits directly to this repo |
+| Public address | **not fixed yet** — resolve it with the CLI, see below |
 
-### Checking deploy status
+### Find the current address before quoting one
 
-If you are an agent (or human) with permission to use this machine's Cloudflare CLI, verify the deployment with `wrangler` instead of assuming a push went live:
+No stable public URL is recorded in this file on purpose. Until a custom domain is attached, the
+site is only reachable on Cloudflare's generated `*.pages.dev` addresses, and each deployment also
+gets its own `<deployment-id>.<project>.pages.dev` alias — so any address written here would go
+stale the moment a new build lands. **Do not hardcode an address; ask the CLI:**
 
 ```sh
-wrangler pages project list                                    # the project should be listed
-wrangler pages deployment list --project-name astro-blog-test  # builds and their status
+wrangler pages project list                                    # project and its domains
+wrangler pages deployment list --project-name astro-blog-test  # newest build, URL and status
 ```
 
-A change is only live once a deployment's `deploy` stage reads `success`. If the newest deployment failed at the `build` stage, production is still serving the previous commit — fix the build rather than re-pushing blindly.
+Take the URL from that output rather than from this README, and pair it with the newest
+deployment whose `deploy` stage reads `success`. A `build` stage of `failure` means production is
+still serving the previous commit — fix the build rather than re-pushing blindly.
+
+If you are an agent (or human) with permission to use this machine's Cloudflare CLI, those same
+commands are how you verify a deploy instead of assuming a push went live.
+
+> TODO: once a custom domain is attached, record it here and this section can be simplified.
 
 Authentication is local to the machine (`wrangler login`, or a `CLOUDFLARE_API_TOKEN` environment variable). Never commit credentials, tokens, account identifiers, or personal email addresses to this repository.
 
