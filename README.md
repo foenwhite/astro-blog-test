@@ -12,6 +12,34 @@ This theme follows best practices and provides accessibility out of the box. Lig
 
 This theme is self-documented \_ which means articles/posts in this theme can also be considered as documentations. Read [the blog posts](https://astro-paper.pages.dev/posts/) or check [the README Documentation Section](#-documentation) for more info.
 
+## 🚀 Deployment
+
+This blog is deployed on **Cloudflare Pages**. Every push to `main` triggers a build and a production deploy.
+
+| | |
+| --- | --- |
+| Production URL | <https://astro-blog-test-4oz.pages.dev> |
+| Cloudflare Pages project | `astro-blog-test` |
+| Production branch | `main` |
+| Build command | `npm run build` |
+| Output directory | `dist` |
+| Content editing | [Pages CMS](https://app.pagescms.org) — commits directly to this repo |
+
+### Checking deploy status
+
+If you are an agent (or human) with permission to use this machine's Cloudflare CLI, verify the deployment with `wrangler` instead of assuming a push went live:
+
+```sh
+wrangler pages project list                                    # the project should be listed
+wrangler pages deployment list --project-name astro-blog-test  # builds and their status
+```
+
+A change is only live once a deployment's `deploy` stage reads `success`. If the newest deployment failed at the `build` stage, production is still serving the previous commit — fix the build rather than re-pushing blindly.
+
+Authentication is local to the machine (`wrangler login`, or a `CLOUDFLARE_API_TOKEN` environment variable). Never commit credentials, tokens, account identifiers, or personal email addresses to this repository.
+
+> **Known failure mode:** a post's frontmatter `slug` must be a single URL segment. A value containing `/`, `#` or `?` (for example `/test_folder`) fails the build with `InvalidDynamicRoute`.
+
 ## 🔥 Features
 
 - [x] type-safe markdown
